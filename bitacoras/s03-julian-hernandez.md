@@ -64,6 +64,17 @@ En la comparación entre búsqueda lineal y binaria se obtuvieron estos resultad
 | 100.000 | 100.000 | 17 | 1,894 ms | 0,034 ms |
 | 1.000.000 | 1.000.000 | 20 | 9,850 ms | 0,051 ms |
 
+### Mejor, promedio y peor caso de búsqueda lineal
+
+| Caso | Situación | Costo aproximado |
+|---|---|---:|
+| Mejor caso | El dato está en la primera posición | 1 comparación |
+| Caso promedio | El dato está cerca de la mitad | aproximadamente n/2 comparaciones |
+| Peor caso | El dato está en la última posición | n comparaciones |
+| Dato inexistente | El dato no se encuentra en el arreglo | n comparaciones |
+
+Esto muestra que la búsqueda lineal tiene un crecimiento O(n), porque en el peor caso puede ser necesario revisar todos los elementos del arreglo.
+
 Para un timestamp inexistente en un arreglo de 100.000 elementos:
 
 ```text
@@ -201,12 +212,12 @@ También se comprobó que la búsqueda binaria no debe utilizarse sobre PM2.5 mi
 ## 8. Aporte al proyecto
 
 - **Archivo(s) o módulo(s) trabajado(s):**
-    - `../src/BuscadorLecturas.java`
-    - `../src/GeneradorDatos.java`
-    - `../src/BancoDePruebas.java`
-    - `../src/IngestaSensores.java`
-    - `traza_busqueda_binaria.md`
-    - `bitacoras/s03-julian-hernandez.md`
+  - `src/BuscadorLecturas.java`
+  - `src/GeneradorDatos.java`
+  - `src/BancoDePruebas.java`
+  - `src/IngestaSensores.java`
+  - `bitacoras/traza_busqueda_binaria.md`
+  - `bitacoras/s03-julian-hernandez.md`
 
 - **Cambio realizado:**  
   Se incorporaron métodos de búsqueda lineal y búsqueda binaria, generación de datos sintéticos, experimentos para comparar eficiencia, pruebas mínimas y una traza manual de búsqueda binaria.
