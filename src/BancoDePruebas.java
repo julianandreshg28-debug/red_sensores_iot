@@ -64,6 +64,7 @@ public class BancoDePruebas {
 
         System.out.println();
     }
+
     /**
      * Experimento 2:
      * compara búsqueda lineal y búsqueda binaria.
@@ -75,11 +76,12 @@ public class BancoDePruebas {
         );
 
         System.out.printf(
-                "%12s %14s %14s %12s%n",
+                "%12s %14s %14s %16s %16s%n",
                 "lecturas",
                 "lineal",
                 "binaria",
-                "relacion"
+                "tiempo lineal",
+                "tiempo binaria"
         );
 
         for (int n : TAMANOS) {
@@ -90,33 +92,51 @@ public class BancoDePruebas {
             String objetivo =
                     GeneradorDatos.timestampEnPosicion(n - 1);
 
+            long inicioLineal = System.nanoTime();
+
             BuscadorLecturas.busquedaLinealPorTimestamp(
                     datos,
                     objetivo
             );
 
+            long finLineal = System.nanoTime();
+
             int lineal =
                     BuscadorLecturas.getComparaciones();
+
+            long inicioBinaria = System.nanoTime();
 
             BuscadorLecturas.busquedaBinariaPorTimestamp(
                     datos,
                     objetivo
             );
 
+            long finBinaria = System.nanoTime();
+
             int binaria =
                     BuscadorLecturas.getComparaciones();
 
+            double tiempoLineal =
+                    (finLineal - inicioLineal)
+                            / 1_000_000.0;
+
+            double tiempoBinaria =
+                    (finBinaria - inicioBinaria)
+                            / 1_000_000.0;
+
             System.out.printf(
-                    "%12d %14d %14d %12.1f%n",
+                    "%12d %14d %14d %16.3f %16.3f%n",
                     n,
                     lineal,
                     binaria,
-                    (double) lineal / binaria
+                    tiempoLineal,
+                    tiempoBinaria
             );
         }
 
         System.out.println();
     }
+
     /**
      * Compara búsqueda de un timestamp inexistente.
      */
@@ -158,6 +178,7 @@ public class BancoDePruebas {
 
         System.out.println();
     }
+
     /**
      * Demuestra qué ocurre cuando la búsqueda binaria
      * se aplica sobre un campo que no está ordenado.
@@ -221,6 +242,7 @@ public class BancoDePruebas {
 
         System.out.println();
     }
+
     public static void pruebasMinimas() {
 
         System.out.println(
