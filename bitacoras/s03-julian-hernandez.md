@@ -201,11 +201,11 @@ También se comprobó que la búsqueda binaria no debe utilizarse sobre PM2.5 mi
 ## 8. Aporte al proyecto
 
 - **Archivo(s) o módulo(s) trabajado(s):**
-    - `src/BuscadorLecturas.java`
-    - `src/GeneradorDatos.java`
-    - `src/BancoDePruebas.java`
-    - `src/IngestaSensores.java`
-    - `bitacoras/traza_busqueda_binaria.md`
+    - `../src/BuscadorLecturas.java`
+    - `../src/GeneradorDatos.java`
+    - `../src/BancoDePruebas.java`
+    - `../src/IngestaSensores.java`
+    - `traza_busqueda_binaria.md`
     - `bitacoras/s03-julian-hernandez.md`
 
 - **Cambio realizado:**  
