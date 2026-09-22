@@ -221,4 +221,78 @@ public class BancoDePruebas {
 
         System.out.println();
     }
+    public static void pruebasMinimas() {
+
+        System.out.println(
+                "=== PRUEBAS MINIMAS DE BUSQUEDA BINARIA ==="
+        );
+
+        LecturaSensor[] datosPequenos =
+                GeneradorDatos.generar(10);
+
+        String primero =
+                GeneradorDatos.timestampEnPosicion(0);
+
+        String intermedio =
+                GeneradorDatos.timestampEnPosicion(5);
+
+        String ultimo =
+                GeneradorDatos.timestampEnPosicion(9);
+
+        String inexistente =
+                GeneradorDatos.timestampInexistente();
+
+        System.out.println(
+                "Primer elemento: "
+                        + BuscadorLecturas
+                        .busquedaBinariaPorTimestamp(
+                                datosPequenos,
+                                primero
+                        )
+        );
+
+        System.out.println(
+                "Elemento intermedio: "
+                        + BuscadorLecturas
+                        .busquedaBinariaPorTimestamp(
+                                datosPequenos,
+                                intermedio
+                        )
+        );
+
+        System.out.println(
+                "Ultimo elemento: "
+                        + BuscadorLecturas
+                        .busquedaBinariaPorTimestamp(
+                                datosPequenos,
+                                ultimo
+                        )
+        );
+
+        System.out.println(
+                "Elemento inexistente: "
+                        + BuscadorLecturas
+                        .busquedaBinariaPorTimestamp(
+                                datosPequenos,
+                                inexistente
+                        )
+        );
+
+        LecturaSensor[] datosGrandes =
+                GeneradorDatos.generar(1_000_000);
+
+        String existenteGrande =
+                GeneradorDatos.timestampEnPosicion(500_000);
+
+        System.out.println(
+                "Elemento existente en arreglo grande: "
+                        + BuscadorLecturas
+                        .busquedaBinariaPorTimestamp(
+                                datosGrandes,
+                                existenteGrande
+                        )
+        );
+
+        System.out.println();
+    }
 }
