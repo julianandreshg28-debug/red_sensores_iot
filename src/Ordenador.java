@@ -54,6 +54,11 @@ public class Ordenador {
         return a.getPm25() < b.getPm25();
     }
 
+    // =====================================================
+    // BURBUJA
+    // TODO 1 RESUELTO: CORTE TEMPRANO
+    // =====================================================
+
     public static void burbuja(LecturaSensor[] datos) {
 
         reiniciarContadores();
@@ -78,6 +83,10 @@ public class Ordenador {
             }
         }
     }
+
+    // =====================================================
+    // SELECCION
+    // =====================================================
 
     public static void seleccion(LecturaSensor[] datos) {
 
@@ -109,6 +118,10 @@ public class Ordenador {
         }
     }
 
+    // =====================================================
+    // INSERCION
+    // =====================================================
+
     public static void insercion(LecturaSensor[] datos) {
 
         reiniciarContadores();
@@ -124,6 +137,7 @@ public class Ordenador {
 
                 if (datos[j].getPm25()
                         <= actual.getPm25()) {
+
                     break;
                 }
 
@@ -136,6 +150,10 @@ public class Ordenador {
             datos[j + 1] = actual;
         }
     }
+
+    // =====================================================
+    // MERGESORT
+    // =====================================================
 
     public static void mergeSort(LecturaSensor[] datos) {
 
@@ -160,19 +178,26 @@ public class Ordenador {
                 new LecturaSensor[datos.length - medio];
 
         System.arraycopy(
-                datos, 0,
-                izquierda, 0,
+                datos,
+                0,
+                izquierda,
+                0,
                 izquierda.length);
 
         System.arraycopy(
-                datos, medio,
-                derecha, 0,
+                datos,
+                medio,
+                derecha,
+                0,
                 derecha.length);
 
         mergeSortRecursivo(izquierda);
         mergeSortRecursivo(derecha);
 
-        fusionar(datos, izquierda, derecha);
+        fusionar(
+                datos,
+                izquierda,
+                derecha);
     }
 
     private static void fusionar(
@@ -201,13 +226,19 @@ public class Ordenador {
         }
 
         while (i < izquierda.length) {
+
             datos[k++] = izquierda[i++];
         }
 
         while (j < derecha.length) {
+
             datos[k++] = derecha[j++];
         }
     }
+
+    // =====================================================
+    // HEAPSORT
+    // =====================================================
 
     public static void heapSort(LecturaSensor[] datos) {
 
@@ -281,6 +312,11 @@ public class Ordenador {
                     mayor);
         }
     }
+
+    // =====================================================
+    // QUICKSORT ORIGINAL
+    // PIVOTE = PRIMER ELEMENTO
+    // =====================================================
 
     public static void quickSortPivotePrimero(
             LecturaSensor[] datos) {
@@ -378,6 +414,124 @@ public class Ordenador {
 
         return j;
     }
+
+    // =====================================================
+    // QUICKSORT MEJORADO
+    // TODO 2 RESUELTO: PIVOTE ALEATORIO
+    // =====================================================
+
+    public static void quickSort(
+            LecturaSensor[] datos) {
+
+        reiniciarContadores();
+
+        quickSortAleatorio(
+                datos,
+                0,
+                datos.length - 1);
+    }
+
+    private static void quickSortAleatorio(
+            LecturaSensor[] datos,
+            int inicio,
+            int fin) {
+
+        if (inicio >= fin) {
+            return;
+        }
+
+        int posicionPivote =
+                particionarAleatorio(
+                        datos,
+                        inicio,
+                        fin);
+
+        quickSortAleatorio(
+                datos,
+                inicio,
+                posicionPivote - 1);
+
+        quickSortAleatorio(
+                datos,
+                posicionPivote + 1,
+                fin);
+    }
+
+    private static int particionarAleatorio(
+            LecturaSensor[] datos,
+            int inicio,
+            int fin) {
+
+        int posicion =
+                inicio
+                        + (int) (
+                        Math.random()
+                                * (fin - inicio + 1)
+                );
+
+        intercambiar(
+                datos,
+                inicio,
+                posicion);
+
+        LecturaSensor pivote =
+                datos[inicio];
+
+        int i = inicio + 1;
+        int j = fin;
+
+        while (true) {
+
+            while (i <= fin) {
+
+                registrarComparacion();
+
+                if (datos[i].getPm25()
+                        > pivote.getPm25()) {
+
+                    break;
+                }
+
+                i++;
+            }
+
+            while (j > inicio) {
+
+                registrarComparacion();
+
+                if (datos[j].getPm25()
+                        <= pivote.getPm25()) {
+
+                    break;
+                }
+
+                j--;
+            }
+
+            if (i >= j) {
+                break;
+            }
+
+            intercambiar(
+                    datos,
+                    i,
+                    j);
+
+            i++;
+            j--;
+        }
+
+        intercambiar(
+                datos,
+                inicio,
+                j);
+
+        return j;
+    }
+
+    // =====================================================
+    // UTILIDADES PARA EXPERIMENTO 5
+    // =====================================================
 
     public static void ordenarPorPm25(
             LecturaSensor[] datos) {

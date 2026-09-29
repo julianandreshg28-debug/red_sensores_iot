@@ -9,8 +9,10 @@ public class BancoDeOrdenamiento {
                 new LecturaSensor[original.length];
 
         System.arraycopy(
-                original, 0,
-                copia, 0,
+                original,
+                0,
+                copia,
+                0,
                 original.length);
 
         return copia;
@@ -46,6 +48,10 @@ public class BancoDeOrdenamiento {
                 Ordenador.getIntercambios(),
                 milis);
     }
+
+    // =====================================================
+    // EXPERIMENTO 1
+    // =====================================================
 
     public static void experimentoUno() {
 
@@ -94,6 +100,10 @@ public class BancoDeOrdenamiento {
         System.out.println();
     }
 
+    // =====================================================
+    // EXPERIMENTO 2
+    // =====================================================
+
     public static void experimentoDos() {
 
         System.out.println(
@@ -103,10 +113,6 @@ public class BancoDeOrdenamiento {
         LecturaSensor[] base =
                 GeneradorDatos.generar(10_000);
 
-        /*
-         * Los algoritmos simples de Ordenador trabajan con PM2.5.
-         * Por eso primero dejamos la base ordenada por PM2.5.
-         */
         Ordenador.mergeSort(base);
 
         LecturaSensor[] a = copiar(base);
@@ -144,6 +150,11 @@ public class BancoDeOrdenamiento {
 
         System.out.println();
     }
+
+    // =====================================================
+    // EXPERIMENTO 3
+    // =====================================================
+
     public static void experimentoTres() {
 
         System.out.println(
@@ -203,5 +214,89 @@ public class BancoDeOrdenamiento {
 
             System.out.println();
         }
+    }
+
+    // =====================================================
+    // EXPERIMENTO 4
+    // =====================================================
+
+    public static void experimentoCuatro() {
+
+        System.out.println(
+                "=== EXP 4: QUICKSORT Y ELECCION DEL PIVOTE ==="
+        );
+
+        System.out.println(
+                "-- Caso A: 50.000 lecturas DESORDENADAS, pivote primero --"
+        );
+
+        LecturaSensor[] revueltas =
+                desordenar(
+                        GeneradorDatos.generar(50_000)
+                );
+
+        long t = System.currentTimeMillis();
+
+        Ordenador.quickSortPivotePrimero(revueltas);
+
+        reportar(
+                "QuickSort",
+                System.currentTimeMillis() - t
+        );
+
+        System.out.println();
+
+        System.out.println(
+                "-- Caso B: 50.000 lecturas EN ORDEN CRONOLOGICO, pivote primero --"
+        );
+
+        LecturaSensor[] enOrden =
+                GeneradorDatos.generar(50_000);
+
+        try {
+
+            t = System.currentTimeMillis();
+
+            Ordenador.quickSortPivotePrimero(enOrden);
+
+            reportar(
+                    "QuickSort",
+                    System.currentTimeMillis() - t
+            );
+
+        } catch (StackOverflowError e) {
+
+            System.out.println(
+                    "QuickSort -> StackOverflowError"
+            );
+
+            System.out.println(
+                    "Comparaciones antes del error: "
+                            + String.format(
+                            "%,d",
+                            Ordenador.getComparaciones()
+                    )
+            );
+        }
+
+        System.out.println();
+
+        System.out.println(
+                "-- Caso C: 50.000 lecturas EN ORDEN CRONOLOGICO, pivote aleatorio --"
+        );
+
+        LecturaSensor[] enOrdenMejorado =
+                GeneradorDatos.generar(50_000);
+
+        t = System.currentTimeMillis();
+
+        Ordenador.quickSort(enOrdenMejorado);
+
+        reportar(
+                "QuickSort",
+                System.currentTimeMillis() - t
+        );
+
+        System.out.println();
     }
 }
