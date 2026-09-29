@@ -144,4 +144,64 @@ public class BancoDeOrdenamiento {
 
         System.out.println();
     }
+    public static void experimentoTres() {
+
+        System.out.println(
+                "=== EXP 3: INSERCION vs MERGESORT vs HEAPSORT ==="
+        );
+
+        int[] tamanos = {
+                1_000,
+                10_000,
+                100_000
+        };
+
+        for (int n : tamanos) {
+
+            System.out.println(
+                    "-- " + String.format("%,d", n)
+                            + " lecturas desordenadas --"
+            );
+
+            LecturaSensor[] base =
+                    desordenar(
+                            GeneradorDatos.generar(n)
+                    );
+
+            LecturaSensor[] a = copiar(base);
+
+            long t = System.currentTimeMillis();
+
+            Ordenador.insercion(a);
+
+            reportar(
+                    "Insercion",
+                    System.currentTimeMillis() - t
+            );
+
+            LecturaSensor[] b = copiar(base);
+
+            t = System.currentTimeMillis();
+
+            Ordenador.mergeSort(b);
+
+            reportar(
+                    "MergeSort",
+                    System.currentTimeMillis() - t
+            );
+
+            LecturaSensor[] c = copiar(base);
+
+            t = System.currentTimeMillis();
+
+            Ordenador.heapSort(c);
+
+            reportar(
+                    "HeapSort",
+                    System.currentTimeMillis() - t
+            );
+
+            System.out.println();
+        }
+    }
 }

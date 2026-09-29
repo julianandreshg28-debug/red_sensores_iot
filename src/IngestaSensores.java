@@ -29,8 +29,14 @@ public class IngestaSensores {
         // SEMANA 4 - ALGORITMOS DE ORDENAMIENTO
         // =====================================================
         System.out.println();
+        System.out.println("====================================================");
+        System.out.println("       SEMANA 4 - ALGORITMOS DE ORDENAMIENTO");
+        System.out.println("====================================================");
+        System.out.println();
+
         BancoDeOrdenamiento.experimentoUno();
         BancoDeOrdenamiento.experimentoDos();
+        BancoDeOrdenamiento.experimentoTres();
     }
 
     /**
