@@ -93,4 +93,55 @@ public class BancoDeOrdenamiento {
 
         System.out.println();
     }
+
+    public static void experimentoDos() {
+
+        System.out.println(
+                "=== EXP 2: ALGORITMOS SIMPLES, 10.000 LECTURAS ORDENADAS ==="
+        );
+
+        LecturaSensor[] base =
+                GeneradorDatos.generar(10_000);
+
+        /*
+         * Los algoritmos simples de Ordenador trabajan con PM2.5.
+         * Por eso primero dejamos la base ordenada por PM2.5.
+         */
+        Ordenador.mergeSort(base);
+
+        LecturaSensor[] a = copiar(base);
+
+        long t = System.currentTimeMillis();
+
+        Ordenador.burbuja(a);
+
+        reportar(
+                "Burbuja",
+                System.currentTimeMillis() - t
+        );
+
+        LecturaSensor[] b = copiar(base);
+
+        t = System.currentTimeMillis();
+
+        Ordenador.seleccion(b);
+
+        reportar(
+                "Seleccion",
+                System.currentTimeMillis() - t
+        );
+
+        LecturaSensor[] c = copiar(base);
+
+        t = System.currentTimeMillis();
+
+        Ordenador.insercion(c);
+
+        reportar(
+                "Insercion",
+                System.currentTimeMillis() - t
+        );
+
+        System.out.println();
+    }
 }

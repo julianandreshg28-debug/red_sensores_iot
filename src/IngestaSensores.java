@@ -1,13 +1,3 @@
-/* ============================================================
-   PLATAFORMA DE MONITOREO AMBIENTAL URBANO
-   IngestaSensores - SEMANA 3
-
-   Este es el ÚNICO punto de entrada de todo el proyecto.
-
-   Las semanas no crean aplicaciones independientes:
-   cada semana agrega capacidades a esta misma plataforma.
-   ============================================================ */
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -33,13 +23,14 @@ public class IngestaSensores {
         // =====================================================
         // SEMANA 3 - BÚSQUEDA Y ANÁLISIS DE EFICIENCIA
         // =====================================================
-        //
-        // BancoDePruebas NO tiene main.
-        // Los experimentos son parte de esta misma aplicación.
-        //
         ejecutarExperimentosSemanaTres();
+
+        // =====================================================
+        // SEMANA 4 - ALGORITMOS DE ORDENAMIENTO
+        // =====================================================
         System.out.println();
         BancoDeOrdenamiento.experimentoUno();
+        BancoDeOrdenamiento.experimentoDos();
     }
 
     /**
@@ -47,6 +38,7 @@ public class IngestaSensores {
      * del proyecto.
      */
     private static void ejecutarExperimentosSemanaTres() {
+
         System.out.println();
         System.out.println("====================================================");
         System.out.println("       SEMANA 3 - BUSQUEDA Y EFICIENCIA");
@@ -65,25 +57,35 @@ public class IngestaSensores {
 
         System.out.println();
         System.out.println("=== INGESTA ===");
+
         System.out.println(
-                "Lecturas almacenadas:      " + repositorio.tamano());
+                "Lecturas almacenadas:      "
+                        + repositorio.tamano());
+
         System.out.println(
-                "Descartadas por formato:   " + descartadasPorFormato);
+                "Descartadas por formato:   "
+                        + descartadasPorFormato);
+
         System.out.println(
-                "Descartadas por rango:     " + descartadasPorRango);
+                "Descartadas por rango:     "
+                        + descartadasPorRango);
+
         System.out.println();
+
         System.out.println(
                 "PM2.5 promedio (repositorio): "
-                + repositorio.promedioPm25());
+                        + repositorio.promedioPm25());
     }
 
     private static void imprimirPerfilHorario(
             AnalizadorMatriz analizador) {
 
         System.out.println();
-        System.out.println("=== PERFIL HORARIO DE LA CIUDAD ===");
+        System.out.println(
+                "=== PERFIL HORARIO DE LA CIUDAD ===");
 
         for (int h = 0; h < 24; h++) {
+
             System.out.printf(
                     "Hora %02d -> PM2.5 promedio: %.2f%n",
                     h,
@@ -92,22 +94,26 @@ public class IngestaSensores {
     }
 
     /**
-     * Lee el archivo línea por línea y alimenta el repositorio y la matriz.
+     * Lee el archivo línea por línea y alimenta
+     * el repositorio y la matriz.
      */
     private static void cargarArchivo(
             RepositorioLecturas repositorio,
-            AnalizadorMatriz analizador) throws IOException {
+            AnalizadorMatriz analizador)
+            throws IOException {
 
         try (BufferedReader lector =
-                     new BufferedReader(new FileReader(ARCHIVO))) {
+                     new BufferedReader(
+                             new FileReader(ARCHIVO))) {
 
-            lector.readLine(); // encabezado
+            lector.readLine();
 
             String linea;
 
             while ((linea = lector.readLine()) != null) {
 
-                LecturaSensor lectura = construirLectura(linea);
+                LecturaSensor lectura =
+                        construirLectura(linea);
 
                 if (lectura == null) {
                     continue;
@@ -119,9 +125,11 @@ public class IngestaSensores {
                 }
 
                 if (!repositorio.agregar(lectura)) {
+
                     System.err.println(
                             "ADVERTENCIA: no se pudo almacenar "
-                            + lectura.getIdSensor());
+                                    + lectura.getIdSensor());
+
                     continue;
                 }
 
@@ -135,7 +143,8 @@ public class IngestaSensores {
      *
      * @return la lectura, o null si la línea está mal formada
      */
-    private static LecturaSensor construirLectura(String linea) {
+    private static LecturaSensor construirLectura(
+            String linea) {
 
         String[] campos = linea.split(",");
 
@@ -145,9 +154,15 @@ public class IngestaSensores {
         }
 
         try {
-            double temperatura = Double.parseDouble(campos[2]);
-            double humedad = Double.parseDouble(campos[3]);
-            double pm25 = Double.parseDouble(campos[4]);
+
+            double temperatura =
+                    Double.parseDouble(campos[2]);
+
+            double humedad =
+                    Double.parseDouble(campos[3]);
+
+            double pm25 =
+                    Double.parseDouble(campos[4]);
 
             return new LecturaSensor(
                     campos[0],
@@ -157,6 +172,7 @@ public class IngestaSensores {
                     pm25);
 
         } catch (NumberFormatException e) {
+
             descartadasPorFormato++;
             return null;
         }

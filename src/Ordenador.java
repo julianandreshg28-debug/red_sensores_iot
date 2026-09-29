@@ -62,11 +62,19 @@ public class Ordenador {
 
         for (int pasada = 0; pasada < n - 1; pasada++) {
 
+            boolean huboIntercambio = false;
+
             for (int j = 0; j < n - 1 - pasada; j++) {
 
                 if (mayorPM25(datos[j], datos[j + 1])) {
+
                     intercambiar(datos, j, j + 1);
+                    huboIntercambio = true;
                 }
+            }
+
+            if (!huboIntercambio) {
+                break;
             }
         }
     }
@@ -92,6 +100,7 @@ public class Ordenador {
             }
 
             if (posicionMenor != i) {
+
                 intercambiar(
                         datos,
                         i,
@@ -120,6 +129,7 @@ public class Ordenador {
 
                 datos[j + 1] = datos[j];
                 registrarIntercambio();
+
                 j--;
             }
 
@@ -206,14 +216,24 @@ public class Ordenador {
         int n = datos.length;
 
         for (int i = n / 2 - 1; i >= 0; i--) {
-            heapify(datos, n, i);
+
+            heapify(
+                    datos,
+                    n,
+                    i);
         }
 
         for (int fin = n - 1; fin > 0; fin--) {
 
-            intercambiar(datos, 0, fin);
+            intercambiar(
+                    datos,
+                    0,
+                    fin);
 
-            heapify(datos, fin, 0);
+            heapify(
+                    datos,
+                    fin,
+                    0);
         }
     }
 
@@ -250,9 +270,15 @@ public class Ordenador {
 
         if (mayor != raiz) {
 
-            intercambiar(datos, raiz, mayor);
+            intercambiar(
+                    datos,
+                    raiz,
+                    mayor);
 
-            heapify(datos, n, mayor);
+            heapify(
+                    datos,
+                    n,
+                    mayor);
         }
     }
 
@@ -298,7 +324,8 @@ public class Ordenador {
             int inicio,
             int fin) {
 
-        LecturaSensor pivote = datos[inicio];
+        LecturaSensor pivote =
+                datos[inicio];
 
         int i = inicio + 1;
         int j = fin;
@@ -311,6 +338,7 @@ public class Ordenador {
 
                 if (datos[i].getPm25()
                         > pivote.getPm25()) {
+
                     break;
                 }
 
@@ -323,6 +351,7 @@ public class Ordenador {
 
                 if (datos[j].getPm25()
                         <= pivote.getPm25()) {
+
                     break;
                 }
 
@@ -333,13 +362,19 @@ public class Ordenador {
                 break;
             }
 
-            intercambiar(datos, i, j);
+            intercambiar(
+                    datos,
+                    i,
+                    j);
 
             i++;
             j--;
         }
 
-        intercambiar(datos, inicio, j);
+        intercambiar(
+                datos,
+                inicio,
+                j);
 
         return j;
     }
