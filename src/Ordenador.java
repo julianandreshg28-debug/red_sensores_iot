@@ -1,34 +1,30 @@
 public class Ordenador {
 
-    private long comparaciones;
-    private long intercambios;
+    private static long comparaciones;
+    private static long intercambios;
 
-    public Ordenador() {
-        reiniciarContadores();
-    }
-
-    public void reiniciarContadores() {
+    public static void reiniciarContadores() {
         comparaciones = 0;
         intercambios = 0;
     }
 
-    public long getComparaciones() {
+    public static long getComparaciones() {
         return comparaciones;
     }
 
-    public long getIntercambios() {
+    public static long getIntercambios() {
         return intercambios;
     }
 
-    private void registrarComparacion() {
+    private static void registrarComparacion() {
         comparaciones++;
     }
 
-    private void registrarIntercambio() {
+    private static void registrarIntercambio() {
         intercambios++;
     }
 
-    private void intercambiar(
+    private static void intercambiar(
             LecturaSensor[] datos,
             int i,
             int j) {
@@ -40,7 +36,7 @@ public class Ordenador {
         registrarIntercambio();
     }
 
-    private boolean mayorPM25(
+    private static boolean mayorPM25(
             LecturaSensor a,
             LecturaSensor b) {
 
@@ -49,7 +45,7 @@ public class Ordenador {
         return a.getPm25() > b.getPm25();
     }
 
-    private boolean menorPM25(
+    private static boolean menorPM25(
             LecturaSensor a,
             LecturaSensor b) {
 
@@ -58,7 +54,9 @@ public class Ordenador {
         return a.getPm25() < b.getPm25();
     }
 
-    public void burbuja(LecturaSensor[] datos) {
+    public static void burbuja(LecturaSensor[] datos) {
+
+        reiniciarContadores();
 
         int n = datos.length;
 
@@ -73,7 +71,9 @@ public class Ordenador {
         }
     }
 
-    public void seleccion(LecturaSensor[] datos) {
+    public static void seleccion(LecturaSensor[] datos) {
+
+        reiniciarContadores();
 
         int n = datos.length;
 
@@ -100,7 +100,9 @@ public class Ordenador {
         }
     }
 
-    public void insercion(LecturaSensor[] datos) {
+    public static void insercion(LecturaSensor[] datos) {
+
+        reiniciarContadores();
 
         for (int i = 1; i < datos.length; i++) {
 
@@ -117,6 +119,7 @@ public class Ordenador {
                 }
 
                 datos[j + 1] = datos[j];
+                registrarIntercambio();
                 j--;
             }
 
@@ -124,7 +127,15 @@ public class Ordenador {
         }
     }
 
-    public void mergeSort(LecturaSensor[] datos) {
+    public static void mergeSort(LecturaSensor[] datos) {
+
+        reiniciarContadores();
+
+        mergeSortRecursivo(datos);
+    }
+
+    private static void mergeSortRecursivo(
+            LecturaSensor[] datos) {
 
         if (datos.length <= 1) {
             return;
@@ -148,13 +159,13 @@ public class Ordenador {
                 derecha, 0,
                 derecha.length);
 
-        mergeSort(izquierda);
-        mergeSort(derecha);
+        mergeSortRecursivo(izquierda);
+        mergeSortRecursivo(derecha);
 
         fusionar(datos, izquierda, derecha);
     }
 
-    private void fusionar(
+    private static void fusionar(
             LecturaSensor[] datos,
             LecturaSensor[] izquierda,
             LecturaSensor[] derecha) {
@@ -187,7 +198,10 @@ public class Ordenador {
             datos[k++] = derecha[j++];
         }
     }
-    public void heapSort(LecturaSensor[] datos) {
+
+    public static void heapSort(LecturaSensor[] datos) {
+
+        reiniciarContadores();
 
         int n = datos.length;
 
@@ -203,7 +217,7 @@ public class Ordenador {
         }
     }
 
-    private void heapify(
+    private static void heapify(
             LecturaSensor[] datos,
             int n,
             int raiz) {
@@ -241,14 +255,19 @@ public class Ordenador {
             heapify(datos, n, mayor);
         }
     }
-    public void quickSort(LecturaSensor[] datos) {
-        quickSort(
+
+    public static void quickSortPivotePrimero(
+            LecturaSensor[] datos) {
+
+        reiniciarContadores();
+
+        quickSortPivotePrimero(
                 datos,
                 0,
                 datos.length - 1);
     }
 
-    private void quickSort(
+    private static void quickSortPivotePrimero(
             LecturaSensor[] datos,
             int inicio,
             int fin) {
@@ -258,20 +277,23 @@ public class Ordenador {
         }
 
         int posicionPivote =
-                particionar(datos, inicio, fin);
+                particionarPivotePrimero(
+                        datos,
+                        inicio,
+                        fin);
 
-        quickSort(
+        quickSortPivotePrimero(
                 datos,
                 inicio,
                 posicionPivote - 1);
 
-        quickSort(
+        quickSortPivotePrimero(
                 datos,
                 posicionPivote + 1,
                 fin);
     }
 
-    private int particionar(
+    private static int particionarPivotePrimero(
             LecturaSensor[] datos,
             int inicio,
             int fin) {
@@ -284,9 +306,11 @@ public class Ordenador {
         while (true) {
 
             while (i <= fin) {
+
                 registrarComparacion();
 
-                if (datos[i].getPm25() > pivote.getPm25()) {
+                if (datos[i].getPm25()
+                        > pivote.getPm25()) {
                     break;
                 }
 
@@ -294,9 +318,11 @@ public class Ordenador {
             }
 
             while (j > inicio) {
+
                 registrarComparacion();
 
-                if (datos[j].getPm25() <= pivote.getPm25()) {
+                if (datos[j].getPm25()
+                        <= pivote.getPm25()) {
                     break;
                 }
 
@@ -308,6 +334,7 @@ public class Ordenador {
             }
 
             intercambiar(datos, i, j);
+
             i++;
             j--;
         }
@@ -315,5 +342,28 @@ public class Ordenador {
         intercambiar(datos, inicio, j);
 
         return j;
+    }
+
+    public static void ordenarPorPm25(
+            LecturaSensor[] datos) {
+
+        mergeSort(datos);
+    }
+
+    public static boolean estaOrdenadoPorTimestamp(
+            LecturaSensor[] datos) {
+
+        for (int i = 1; i < datos.length; i++) {
+
+            if (datos[i - 1]
+                    .getTimestamp()
+                    .compareTo(
+                            datos[i].getTimestamp()) > 0) {
+
+                return false;
+            }
+        }
+
+        return true;
     }
 }

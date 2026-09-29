@@ -38,6 +38,8 @@ public class IngestaSensores {
         // Los experimentos son parte de esta misma aplicación.
         //
         ejecutarExperimentosSemanaTres();
+        System.out.println();
+        BancoDeOrdenamiento.experimentoUno();
     }
 
     /**
