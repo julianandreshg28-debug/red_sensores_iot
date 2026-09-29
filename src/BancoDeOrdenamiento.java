@@ -49,10 +49,6 @@ public class BancoDeOrdenamiento {
                 milis);
     }
 
-    // =====================================================
-    // EXPERIMENTO 1
-    // =====================================================
-
     public static void experimentoUno() {
 
         System.out.println(
@@ -100,10 +96,6 @@ public class BancoDeOrdenamiento {
         System.out.println();
     }
 
-    // =====================================================
-    // EXPERIMENTO 2
-    // =====================================================
-
     public static void experimentoDos() {
 
         System.out.println(
@@ -150,10 +142,6 @@ public class BancoDeOrdenamiento {
 
         System.out.println();
     }
-
-    // =====================================================
-    // EXPERIMENTO 3
-    // =====================================================
 
     public static void experimentoTres() {
 
@@ -215,10 +203,6 @@ public class BancoDeOrdenamiento {
             System.out.println();
         }
     }
-
-    // =====================================================
-    // EXPERIMENTO 4
-    // =====================================================
 
     public static void experimentoCuatro() {
 
@@ -295,6 +279,97 @@ public class BancoDeOrdenamiento {
         reportar(
                 "QuickSort",
                 System.currentTimeMillis() - t
+        );
+
+        System.out.println();
+    }
+
+    public static void experimentoCinco() {
+
+        System.out.println(
+                "=== EXP 5: EL RANKING Y LA CONSULTA ==="
+        );
+
+        LecturaSensor[] datos =
+                GeneradorDatos.generar(100_000);
+
+        String objetivo =
+                GeneradorDatos.timestampEnPosicion(73_412);
+
+        System.out.println(
+                "Paso 1. Los datos llegan ordenados por timestamp."
+        );
+
+        System.out.println(
+                "Ordenado por timestamp: "
+                        + Ordenador.estaOrdenadoPorTimestamp(datos)
+        );
+
+        int pos =
+                BuscadorLecturas.busquedaBinariaPorTimestamp(
+                        datos,
+                        objetivo
+                );
+
+        System.out.println(
+                "Busqueda binaria por timestamp -> posicion: "
+                        + pos
+                        + " (comparaciones: "
+                        + BuscadorLecturas.getComparaciones()
+                        + ")"
+        );
+
+        System.out.println();
+
+        System.out.println(
+                "Paso 2. Ordenamos el mismo arreglo por PM2.5."
+        );
+
+        Ordenador.ordenarPorPm25(datos);
+
+        System.out.println(
+                "PM2.5 mas bajo: "
+                        + datos[0].getPm25()
+                        + " | PM2.5 mas alto: "
+                        + datos[datos.length - 1].getPm25()
+        );
+
+        System.out.println();
+
+        System.out.println(
+                "Paso 3. Volvemos a buscar por timestamp."
+        );
+
+        System.out.println(
+                "Ordenado por timestamp: "
+                        + Ordenador.estaOrdenadoPorTimestamp(datos)
+        );
+
+        pos =
+                BuscadorLecturas.busquedaBinariaPorTimestamp(
+                        datos,
+                        objetivo
+                );
+
+        System.out.println(
+                "Busqueda binaria por timestamp -> posicion: "
+                        + pos
+                        + " (comparaciones: "
+                        + BuscadorLecturas.getComparaciones()
+                        + ")"
+        );
+
+        System.out.println();
+
+        int posLineal =
+                BuscadorLecturas.busquedaLinealPorTimestamp(
+                        datos,
+                        objetivo
+                );
+
+        System.out.println(
+                "Verificacion con busqueda lineal -> posicion: "
+                        + posLineal
         );
 
         System.out.println();
