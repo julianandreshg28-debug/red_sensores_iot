@@ -34,10 +34,10 @@ public class IngestaSensores {
         System.out.println("====================================================");
         System.out.println();
 
-        // BancoDeOrdenamiento.experimentoUno();
-// BancoDeOrdenamiento.experimentoDos();
-// BancoDeOrdenamiento.experimentoTres();
-// BancoDeOrdenamiento.experimentoCuatro();
+        BancoDeOrdenamiento.experimentoUno();
+        BancoDeOrdenamiento.experimentoDos();
+        BancoDeOrdenamiento.experimentoTres();
+        BancoDeOrdenamiento.experimentoCuatro();
         BancoDeOrdenamiento.experimentoCinco();
     }
 

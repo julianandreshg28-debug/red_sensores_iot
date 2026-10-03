@@ -2,66 +2,53 @@ import java.util.Random;
 
 public class BancoDeOrdenamiento {
 
-    private static LecturaSensor[] copiar(
-            LecturaSensor[] original) {
+    // ---------- utilidades ----------
 
-        LecturaSensor[] copia =
-                new LecturaSensor[original.length];
-
-        System.arraycopy(
-                original,
-                0,
-                copia,
-                0,
-                original.length);
-
+    /** Copia el arreglo para que cada algoritmo empiece en igualdad de condiciones. */
+    private static LecturaSensor[] copiar(LecturaSensor[] original) {
+        LecturaSensor[] copia = new LecturaSensor[original.length];
+        System.arraycopy(original, 0, copia, 0, original.length);
         return copia;
     }
 
-    private static LecturaSensor[] desordenar(
-            LecturaSensor[] original) {
-
+    /** Desordena un arreglo con una semilla fija, para que el experimento sea repetible. */
+    private static LecturaSensor[] desordenar(LecturaSensor[] original) {
         LecturaSensor[] copia = copiar(original);
-
         Random azar = new Random(777L);
 
         for (int i = copia.length - 1; i > 0; i--) {
-
             int j = azar.nextInt(i + 1);
 
-            LecturaSensor temporal = copia[i];
+            LecturaSensor t = copia[i];
             copia[i] = copia[j];
-            copia[j] = temporal;
+            copia[j] = t;
         }
 
         return copia;
     }
 
-    private static void reportar(
-            String nombre,
-            long milis) {
-
+    private static void reportar(String nombre, long milis) {
         System.out.printf(
                 "%-14s comparaciones: %,14d   intercambios: %,14d   %6d ms%n",
                 nombre,
                 Ordenador.getComparaciones(),
                 Ordenador.getIntercambios(),
-                milis);
+                milis
+        );
     }
 
-    public static void experimentoUno() {
+    // ---------- EXPERIMENTO 1 ----------
 
+    /** Los tres algoritmos simples sobre 10.000 lecturas DESORDENADAS. */
+    public static void experimentoUno() {
         System.out.println(
                 "=== EXP 1: ALGORITMOS SIMPLES, 10.000 LECTURAS DESORDENADAS ==="
         );
 
         LecturaSensor[] base =
-                desordenar(
-                        GeneradorDatos.generar(10_000)
-                );
+                desordenar(GeneradorDatos.generar(10_000));
 
         LecturaSensor[] a = copiar(base);
-
         long t = System.currentTimeMillis();
 
         Ordenador.burbuja(a);
@@ -72,7 +59,6 @@ public class BancoDeOrdenamiento {
         );
 
         LecturaSensor[] b = copiar(base);
-
         t = System.currentTimeMillis();
 
         Ordenador.seleccion(b);
@@ -83,7 +69,6 @@ public class BancoDeOrdenamiento {
         );
 
         LecturaSensor[] c = copiar(base);
-
         t = System.currentTimeMillis();
 
         Ordenador.insercion(c);
@@ -96,19 +81,22 @@ public class BancoDeOrdenamiento {
         System.out.println();
     }
 
+    // ---------- EXPERIMENTO 2 ----------
+
+    /** Los mismos tres algoritmos sobre datos que YA VIENEN ORDENADOS. */
     public static void experimentoDos() {
+        System.out.println(
+                "=== EXP 2: LOS MISMOS TRES, PERO CON DATOS YA ORDENADOS ==="
+        );
 
         System.out.println(
-                "=== EXP 2: ALGORITMOS SIMPLES, 10.000 LECTURAS ORDENADAS ==="
+                "(asi es como llegan de la red de sensores: en orden cronologico)"
         );
 
         LecturaSensor[] base =
                 GeneradorDatos.generar(10_000);
 
-        Ordenador.mergeSort(base);
-
         LecturaSensor[] a = copiar(base);
-
         long t = System.currentTimeMillis();
 
         Ordenador.burbuja(a);
@@ -119,7 +107,6 @@ public class BancoDeOrdenamiento {
         );
 
         LecturaSensor[] b = copiar(base);
-
         t = System.currentTimeMillis();
 
         Ordenador.seleccion(b);
@@ -130,7 +117,6 @@ public class BancoDeOrdenamiento {
         );
 
         LecturaSensor[] c = copiar(base);
-
         t = System.currentTimeMillis();
 
         Ordenador.insercion(c);
@@ -143,10 +129,12 @@ public class BancoDeOrdenamiento {
         System.out.println();
     }
 
-    public static void experimentoTres() {
+    // ---------- EXPERIMENTO 3 ----------
 
+    /** Simples contra avanzados, a escala creciente. */
+    public static void experimentoTres() {
         System.out.println(
-                "=== EXP 3: INSERCION vs MERGESORT vs HEAPSORT ==="
+                "=== EXP 3: SIMPLES CONTRA AVANZADOS ==="
         );
 
         int[] tamanos = {
@@ -158,17 +146,15 @@ public class BancoDeOrdenamiento {
         for (int n : tamanos) {
 
             System.out.println(
-                    "-- " + String.format("%,d", n)
+                    "-- "
+                            + String.format("%,d", n)
                             + " lecturas desordenadas --"
             );
 
             LecturaSensor[] base =
-                    desordenar(
-                            GeneradorDatos.generar(n)
-                    );
+                    desordenar(GeneradorDatos.generar(n));
 
             LecturaSensor[] a = copiar(base);
-
             long t = System.currentTimeMillis();
 
             Ordenador.insercion(a);
@@ -179,7 +165,6 @@ public class BancoDeOrdenamiento {
             );
 
             LecturaSensor[] b = copiar(base);
-
             t = System.currentTimeMillis();
 
             Ordenador.mergeSort(b);
@@ -190,7 +175,6 @@ public class BancoDeOrdenamiento {
             );
 
             LecturaSensor[] c = copiar(base);
-
             t = System.currentTimeMillis();
 
             Ordenador.heapSort(c);
@@ -204,20 +188,20 @@ public class BancoDeOrdenamiento {
         }
     }
 
-    public static void experimentoCuatro() {
+    // ---------- EXPERIMENTO 4 ----------
 
+    /** QuickSort con pivote fijo: primero con datos desordenados, luego con datos reales. */
+    public static void experimentoCuatro() {
         System.out.println(
-                "=== EXP 4: QUICKSORT Y ELECCION DEL PIVOTE ==="
+                "=== EXP 4: QUICKSORT CON PIVOTE = PRIMER ELEMENTO ==="
         );
 
         System.out.println(
-                "-- Caso A: 50.000 lecturas DESORDENADAS, pivote primero --"
+                "-- Caso A: 50.000 lecturas DESORDENADAS --"
         );
 
         LecturaSensor[] revueltas =
-                desordenar(
-                        GeneradorDatos.generar(50_000)
-                );
+                desordenar(GeneradorDatos.generar(50_000));
 
         long t = System.currentTimeMillis();
 
@@ -231,14 +215,13 @@ public class BancoDeOrdenamiento {
         System.out.println();
 
         System.out.println(
-                "-- Caso B: 50.000 lecturas EN ORDEN CRONOLOGICO, pivote primero --"
+                "-- Caso B: 50.000 lecturas EN ORDEN CRONOLOGICO (como llegan de la red) --"
         );
 
         LecturaSensor[] enOrden =
                 GeneradorDatos.generar(50_000);
 
         try {
-
             t = System.currentTimeMillis();
 
             Ordenador.quickSortPivotePrimero(enOrden);
@@ -251,11 +234,11 @@ public class BancoDeOrdenamiento {
         } catch (StackOverflowError e) {
 
             System.out.println(
-                    "QuickSort -> StackOverflowError"
+                    "QuickSort      -> StackOverflowError: el programa se quedo sin pila."
             );
 
             System.out.println(
-                    "Comparaciones antes del error: "
+                    "                  Comparaciones alcanzadas antes de morir: "
                             + String.format(
                             "%,d",
                             Ordenador.getComparaciones()
@@ -284,8 +267,10 @@ public class BancoDeOrdenamiento {
         System.out.println();
     }
 
-    public static void experimentoCinco() {
+    // ---------- EXPERIMENTO 5 ----------
 
+    /** Ordenar por PM2.5 para el ranking... y consultar por timestamp despues. */
+    public static void experimentoCinco() {
         System.out.println(
                 "=== EXP 5: EL RANKING Y LA CONSULTA ==="
         );
@@ -297,11 +282,11 @@ public class BancoDeOrdenamiento {
                 GeneradorDatos.timestampEnPosicion(73_412);
 
         System.out.println(
-                "Paso 1. Los datos llegan ordenados por timestamp."
+                "Paso 1. Los datos llegan de la red en orden cronologico."
         );
 
         System.out.println(
-                "Ordenado por timestamp: "
+                "        Ordenado por timestamp: "
                         + Ordenador.estaOrdenadoPorTimestamp(datos)
         );
 
@@ -312,9 +297,9 @@ public class BancoDeOrdenamiento {
                 );
 
         System.out.println(
-                "Busqueda binaria por timestamp -> posicion: "
+                "        Consulta binaria por timestamp -> posicion: "
                         + pos
-                        + " (comparaciones: "
+                        + "  (comparaciones: "
                         + BuscadorLecturas.getComparaciones()
                         + ")"
         );
@@ -322,26 +307,30 @@ public class BancoDeOrdenamiento {
         System.out.println();
 
         System.out.println(
-                "Paso 2. Ordenamos el mismo arreglo por PM2.5."
+                "Paso 2. El area de comunicaciones pide el ranking de estaciones"
+        );
+
+        System.out.println(
+                "        mas contaminadas. Ordenamos por PM2.5."
         );
 
         Ordenador.ordenarPorPm25(datos);
 
         System.out.println(
-                "PM2.5 mas bajo: "
+                "        Ranking listo. PM2.5 mas bajo: "
                         + datos[0].getPm25()
-                        + " | PM2.5 mas alto: "
+                        + " | mas alto: "
                         + datos[datos.length - 1].getPm25()
         );
 
         System.out.println();
 
         System.out.println(
-                "Paso 3. Volvemos a buscar por timestamp."
+                "Paso 3. Otro usuario vuelve a consultar la misma lectura de siempre."
         );
 
         System.out.println(
-                "Ordenado por timestamp: "
+                "        Ordenado por timestamp: "
                         + Ordenador.estaOrdenadoPorTimestamp(datos)
         );
 
@@ -352,24 +341,21 @@ public class BancoDeOrdenamiento {
                 );
 
         System.out.println(
-                "Busqueda binaria por timestamp -> posicion: "
+                "        Consulta binaria por timestamp -> posicion: "
                         + pos
-                        + " (comparaciones: "
+                        + "  (comparaciones: "
                         + BuscadorLecturas.getComparaciones()
                         + ")"
         );
 
         System.out.println();
 
-        int posLineal =
-                BuscadorLecturas.busquedaLinealPorTimestamp(
+        System.out.println(
+                "        Verificacion con busqueda lineal -> posicion: "
+                        + BuscadorLecturas.busquedaLinealPorTimestamp(
                         datos,
                         objetivo
-                );
-
-        System.out.println(
-                "Verificacion con busqueda lineal -> posicion: "
-                        + posLineal
+                )
         );
 
         System.out.println();
